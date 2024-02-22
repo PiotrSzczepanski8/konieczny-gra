@@ -22,6 +22,8 @@ function drawBunny(){
 
 function update(){
     ctx.clearRect(0, 0, 1200, 600);
+    ctx.fillStyle =  "#0f0";
+    
     drawBunny();
     if (keys['a'] && bunny.x > 0+50) {
         bunny.x -= speed;
@@ -39,7 +41,7 @@ function onKeyDown(e) {
     keys[e.key] = false;
   }
 
-speed = 6;
+speed = 15;
 
 window.addEventListener('keydown', onKeyDown);
 window.addEventListener('keyup', onKeyUp);
