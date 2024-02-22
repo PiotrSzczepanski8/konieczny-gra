@@ -1,6 +1,6 @@
 const canvas = document.createElement('canvas');
 canvas.width = 1200;
-canvas.height = 600;
+canvas.height = 700;
 document.body.appendChild(canvas);
 
 const ctx = canvas.getContext("2d");
@@ -21,7 +21,7 @@ function drawBunny(){
 }
 
 function update(){
-    ctx.clearRect(0, 0, 1200, 600);
+    ctx.clearRect(0, 0, 1200, 700);
     ctx.fillStyle =  "#0f0";
     ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
     drawBunny();
