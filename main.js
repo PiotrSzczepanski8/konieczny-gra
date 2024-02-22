@@ -23,7 +23,7 @@ function drawBunny(){
 function update(){
     ctx.clearRect(0, 0, 1200, 600);
     ctx.fillStyle =  "#0f0";
-    
+    ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
     drawBunny();
     if (keys['a'] && bunny.x > 0+50) {
         bunny.x -= speed;
