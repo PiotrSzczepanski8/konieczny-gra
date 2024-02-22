@@ -15,16 +15,48 @@ let bunny = {
 const bunnyImg = new Image();
 bunnyImg.src = 'bunny.png';
 
+const eggImage = new Image();
+eggImage.src = 'egg.png'
+
 function drawBunny(){
     ctx.fillStyle = bunny.color;
     ctx.drawImage(bunnyImg, bunny.x - bunny.size / 2, bunny.y - 160, bunny.size, bunny.size * 2);
 }
+
+let eggs = [];
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+function createEgg(){
+    let egg = {
+        x: getRandomInt(1170),
+        y: 0
+    }
+    eggs.push(egg);
+}
+
+function killEgg(){
+    eggs.shift();
+}
+
+function drawEggs(){
+    eggs.forEach(egg => {
+        ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
+        egg.y += 5;
+    });
+}
+
+
+setInterval(createEgg, 1000);
 
 function update(){
     ctx.clearRect(0, 0, 1200, 700);
     ctx.fillStyle =  "#0f0";
     ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
     drawBunny();
+    drawEggs();
     if (keys['a'] && bunny.x > 0+50) {
         bunny.x -= speed;
     } else if (keys['d'] && bunny.x < canvas.width-50) {
@@ -34,12 +66,12 @@ function update(){
 }
 
 function onKeyDown(e) {
-    keys[e.key] = true;
-  }
-  
-  function onKeyUp(e) {
-    keys[e.key] = false;
-  }
+  keys[e.key] = true;
+}
+
+function onKeyUp(e) {
+  keys[e.key] = false;
+}
 
 speed = 15;
 
