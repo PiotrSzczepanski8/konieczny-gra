@@ -43,16 +43,16 @@ function createEgg(){
 
 function killEgg(){
     eggs.forEach(egg => {
-        if(egg.x>=bunny.x-(bunny.size/2)&&egg.x+30<=bunny.x+(bunny.size/2)&&egg.y>=bunny.y-160&&egg.y<=bunny.y){
+        if(egg.x>=bunny.x-(bunny.size/2)&&egg.x+30<=bunny.x+(bunny.size/2)&&egg.y+40>=bunny.y-160&&egg.y<=bunny.y){
             //do poprawy hitbox jajka
-            eggs.splice(egg);
+            eggs.shift();
             points+=1;
         }
         
         // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
         // egg.y += 1;
     });
-    //eggs.shift();
+    
 }
 
 function drawEggs(){
