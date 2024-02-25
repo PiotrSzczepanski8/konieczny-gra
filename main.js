@@ -3,6 +3,8 @@ canvas.width = 1200;
 canvas.height = 700;
 document.body.appendChild(canvas);
 
+let points = 0
+
 const ctx = canvas.getContext("2d");
 
 let bunny = {
@@ -21,6 +23,7 @@ eggImage.src = 'egg.png'
 function drawBunny(){
     ctx.fillStyle = bunny.color;
     ctx.drawImage(bunnyImg, bunny.x - bunny.size / 2, bunny.y - 160, bunny.size, bunny.size * 2);
+
 }
 
 let eggs = [];
@@ -30,6 +33,7 @@ function getRandomInt(max) {
 }
 
 function createEgg(){
+
     let egg = {
         x: getRandomInt(1170),
         y: 0
@@ -38,13 +42,24 @@ function createEgg(){
 }
 
 function killEgg(){
-    eggs.shift();
+    eggs.forEach(egg => {
+        if(egg.x>=bunny.x-(bunny.size/2)&&egg.x+30<=bunny.x+(bunny.size/2)&&egg.y>=bunny.y-160&&egg.y<=bunny.y){
+            //do poprawy hitbox jajka
+            eggs.splice(egg);
+            points+=1;
+        }
+        
+        // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
+        // egg.y += 1;
+    });
+    //eggs.shift();
 }
 
 function drawEggs(){
     eggs.forEach(egg => {
         ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
-        egg.y += 5;
+        egg.y += 2;
+        killEgg();
     });
 }
 
@@ -57,11 +72,13 @@ function update(){
     ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
     drawBunny();
     drawEggs();
+    
     if (keys['a'] && bunny.x > 0+50) {
         bunny.x -= speed;
     } else if (keys['d'] && bunny.x < canvas.width-50) {
         bunny.x += speed;
     }
+    document.getElementById("pt").textContent = points;
     requestAnimationFrame(update);
 }
 
