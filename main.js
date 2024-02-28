@@ -5,8 +5,11 @@ canvas.height = 700;
 document.body.appendChild(canvas);
 
 let points = 0;
+let counter = 10;
+let bossF = false;
 
 const ctx = canvas.getContext("2d");
+ctx.imageSmoothingEnabled = false;
 
 let bunny = {
   x: canvas.width / 2,
@@ -21,6 +24,12 @@ bunnyImg.src = "bunny.png";
 const eggImage = new Image();
 eggImage.src = "egg.png";
 
+const Boss1Image = new Image();
+Boss1Image.src = "alfa_boss_1.png";
+
+const spoiledEggImage = new Image();
+spoiledEggImage.src = "spoiledEgg.png";
+
 function drawBunny() {
   ctx.fillStyle = bunny.color;
   ctx.drawImage(
@@ -34,16 +43,28 @@ function drawBunny() {
 
 let eggs = [];
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
+
+function getRandomInt(max, min) {
+  return Math.floor(Math.random() * max + min);
 }
 
 function createEgg() {
-  let egg = {
-    x: getRandomInt(1170),
-    y: 0,
-  };
-  eggs.push(egg);
+  if(bossF == true){
+    let egg = {
+      x: getRandomInt(1170,0),
+      y: 0,
+      v: getRandomInt(2,0),
+    };
+    eggs.push(egg);
+  } else{
+    let egg = {
+      x: getRandomInt(1170,0),
+      y: 0,
+      v: 1,
+    };
+    eggs.push(egg);
+  }
+  
 }
 
 function killEgg() {
@@ -57,6 +78,10 @@ function killEgg() {
       //do poprawy hitbox jajka
       eggs.shift();
       points += 1;
+      if(points>=counter){
+        bossF = true;
+        counter = 999999;
+      }
     } else if(egg.y >= canvas.height){
       eggs.shift();
     }
@@ -67,11 +92,32 @@ function killEgg() {
 }
 
 function drawEggs() {
-  eggs.forEach((egg) => {
-    ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
-    egg.y += 2;
-    killEgg();
-  });
+  if(bossF == true){
+    eggs.forEach((egg) => {
+      if(egg.v == 1)
+      {
+        ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
+        egg.y += 2;
+        killEgg();
+      } else{
+        ctx.drawImage(spoiledEggImage, egg.x, egg.y, 30, 40);
+        egg.y += 5;
+        killEgg();
+      }
+      
+    });
+  } else{
+    eggs.forEach((egg) => {
+      ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
+      egg.y += 2;
+      killEgg();
+    });
+  }
+  
+}
+
+function drawBoss(){
+  ctx.drawImage(Boss1Image, 0, 0, 1200, 100);
 }
 
 function update() {
@@ -79,8 +125,12 @@ function update() {
     ctx.clearRect(0, 0, 1200, 700);
     ctx.fillStyle = "#0f0";
     ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
+    if(bossF == true){
+      drawBoss();
+    }
     drawBunny();
     drawEggs();
+    
 
     if (keys["a"] && bunny.x > 0 + 50) {
       bunny.x -= speed;
@@ -117,3 +167,5 @@ const keys = {};
 
 pauseBtn.addEventListener("click", pause);
 update();
+
+// boss fight
