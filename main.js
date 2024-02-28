@@ -57,6 +57,8 @@ function killEgg() {
       //do poprawy hitbox jajka
       eggs.shift();
       points += 1;
+    } else if(egg.y >= canvas.height){
+      eggs.shift();
     }
 
     // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
