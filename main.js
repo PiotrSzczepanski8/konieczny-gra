@@ -61,11 +61,15 @@ function getRandomInt(max, min) {
   return Math.floor(Math.random() * max + min);
 }
 
+let EgId =0;
+
 function createEgg() {
     let egg = {
       x: getRandomInt(1170,0),
       y: 0,
+      id: EgId,
     };
+    EgId+=1;
     eggs.push(egg); 
     if(bossF){
       let egg = {
@@ -76,6 +80,8 @@ function createEgg() {
     }
 }
 
+let problem = 0;
+
 function killEgg() {
   eggs.forEach((egg) => {
     if (
@@ -85,14 +91,30 @@ function killEgg() {
       egg.y <= bunny.y
     ) {
       //do poprawy hitbox jajka
-      eggs.shift();
+      problem = egg.id;
+      eggs.slice(problem,1);
+      EgId-=1;
+      eggs.forEach((egg) =>{
+        if(egg.id > problem){
+          egg.id-=1;
+        }
+        
+      })
       points += 1;
       if(points>=counter){
         bossF = true;
         counter = 999999;
       }
     } else if(egg.y+40 >= canvas.height){
-      eggs.shift();
+      problem = egg.id
+      eggs.slice(problem,1);
+      EgId-=1;
+      eggs.forEach((egg) =>{
+        if(egg.id > problem){
+          egg.id-=1;
+        }
+        
+      })
     }
 
     // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
@@ -165,20 +187,21 @@ function onKeyUp(e) {
 
 speed = 4;
 let paused = false;
-let game = setInterval(createEgg, 1400);
-function pause() {
-  paused = !paused;
-  if (paused) {
-    clearInterval(game);
-  } else {
-    game = setInterval(createEgg, 1400);
-  }
-}
+createEgg();
+// let game = setInterval(createEgg, 1400);
+// function pause() {
+//   paused = !paused;
+//   if (paused) {
+//     clearInterval(game);
+//   } else {
+//     game = setInterval(createEgg, 1400);
+//   }
+// }
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
 const keys = {};
 
-pauseBtn.addEventListener("click", pause);
+// pauseBtn.addEventListener("click", pause);
 update();
 })
 // boss fight
