@@ -1,23 +1,26 @@
 const startBtn = document.createElement("button")
 startBtn.innerHTML = "START"
 document.body.appendChild(startBtn);
-
+startBtn.style.backgroundColor = "rgb(6, 190, 231)"
+startBtn.style.color = "#0f0"
+startBtn.style.border = "none"
+startBtn.style.fontSize = "x-large"
+startBtn.style.padding = "1em"
+startBtn.style.border
 startBtn.addEventListener("click",()=>{
   startBtn.remove()
   let points = 0;
   const canvas = document.createElement("canvas");
-  const pauseBtn = document.createElement("button");
   const h1 = document.createElement("h1")
 
   document.body.appendChild(canvas)
   
   canvas.width = 1200;
   canvas.height = 700;
-  document.body.appendChild(pauseBtn)
-  pauseBtn.innerHTML = "pause"
+
   document.body.appendChild(h1)
   h1.innerHTML = "score: "
-  let counter = 10;
+  let counter = 1000000;
   let bossF = false;
   
   const ctx = canvas.getContext("2d");
@@ -26,7 +29,7 @@ startBtn.addEventListener("click",()=>{
   let bunny = {
   x: canvas.width / 2,
   y: canvas.height - 50,
-  size: 100,
+  size: 80,
   color: "#f00",
 };
 
@@ -35,33 +38,51 @@ bunnyImg.src = "bunny.png";
 
 const eggImage = new Image();
 eggImage.src = "egg.png";
-
-const Boss1Image = new Image();
-Boss1Image.src = "alfa_boss_1.png";
+const heartImage = new Image();
+heartImage.src = "serce.png"
+/* const Boss1Image = new Image();
+Boss1Image.src = "alfa_boss_1.png"; */
 
 const spoiledEggImage = new Image();
 spoiledEggImage.src = "spoiledEgg.png";
+let heartx = 1200
+let hearts = []
+function createHeart(){
+  let heart = {
+    x: heartx,
+    y: 0
+  }
+  heartx-=40
+  hearts.push(heart)
+  
+}
+function drawHeart(){
+  hearts.forEach((heart)=>{
+    ctx.fillStyle = "red"
+    ctx.drawImage(heartImage,heart.x - 60,heart.y + 20,30,30)
+   
+  })
+}
 
 function drawBunny() {
   ctx.fillStyle = bunny.color;
   ctx.drawImage(
     bunnyImg,
     bunny.x - bunny.size / 2,
-    bunny.y - 160,
+    bunny.y - 120,
     bunny.size,
     bunny.size * 2
-  );
-}
+    );
+  }
+  
+  let eggs = [];
+  let badEggs = [];
+  
+  function getRandomInt(max, min) {
+    return Math.floor(Math.random() * max + min);
+  }
 
-let eggs = [];
-let badEggs = [];
-
-
-function getRandomInt(max, min) {
-  return Math.floor(Math.random() * max + min);
-}
-
-function createEgg() {
+  function createEgg() {
     let egg = {
       x: getRandomInt(1170,0),
       y: 0,
@@ -71,20 +92,26 @@ function createEgg() {
       let egg = {
         x: getRandomInt(1170,0),
         y: 0,
+       
       };
+      
       badEggs.push(egg);
-    }
 }
-
-function killEgg() {
-  eggs.forEach((egg) => {
-    if (
-      egg.x >= bunny.x - bunny.size*0.8&&
-      egg.x + 30 <= bunny.x + bunny.size*0.8&&
-      egg.y + 40 >= bunny.y - 160 &&
-      egg.y <= bunny.y
-    ) {
-      //do poprawy hitbox jajka
+}
+pauseImg = new Image();
+pauseImg.src = 'pause.png'
+function drawPause(){
+  ctx.drawImage(pauseImg,10,10,50,50)
+}
+  function killEgg() {
+    eggs.forEach((egg) => {
+      if (
+        egg.x >= bunny.x - bunny.size * 0.8 &&
+        egg.x + 30 <= bunny.x + bunny.size * 0.8 &&
+        egg.y + 40 >= bunny.y - 120 &&
+        egg.y <= bunny.y
+        ) {
+          //do poprawy hitbox jajka
       eggs.shift();
       points += 1;
       if(points>=counter){
@@ -94,27 +121,24 @@ function killEgg() {
     } else if(egg.y+40 >= canvas.height){
       eggs.shift();
     }
-
-    // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
-    // egg.y += 1;
-  });
-  badEggs.forEach((egg) => {
-    if (
-      egg.x >= bunny.x - bunny.size*0.8 &&
-      egg.x + 60 <= bunny.x + bunny.size*0.8 &&
-      egg.y + 80 >= bunny.y - 160 &&
-      egg.y <= bunny.y
-    ) {
-      //do poprawy hitbox jajka
-      badEggs.shift();
-    } else if(egg.y+80 >= canvas.height){
-      badEggs.shift();
-    }
-
-    // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
-    // egg.y += 1;
-  });
-}
+    });
+    badEggs.forEach((egg) => {
+      if (
+        egg.x >= bunny.x - bunny.size*0.8 &&
+        egg.x + 60 <= bunny.x + bunny.size*0.8 &&
+        egg.y + 80 >= bunny.y - 160 &&
+        egg.y <= bunny.y
+      ) {
+        //do poprawy hitbox jajka
+        badEggs.shift();
+      } else if(egg.y+80 >= canvas.height){
+        badEggs.shift();
+      }
+  
+      // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
+      // egg.y += 1;
+    });
+  }
 
 function drawEggs() {
   eggs.forEach((egg) => {
@@ -143,16 +167,16 @@ function update() {
     }
     drawBunny();
     drawEggs();
-    
-
+    drawHeart()
+    drawPause()
     if (keys["a"] && bunny.x > 0 + 50) {
       bunny.x -= speed;
     } else if (keys["d"] && bunny.x < canvas.width - 50) {
       bunny.x += speed;
     }
     h1.innerHTML = `score: ${points}`;
-}
-requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
 }
 
 function onKeyDown(e) {
@@ -163,22 +187,37 @@ function onKeyUp(e) {
   keys[e.key] = false;
 }
 
-speed = 4;
+speed = 5;
 let paused = false;
-let game = setInterval(createEgg, 1400);
+let game = setInterval(createEgg, 2100);
+for(let i = 0;i<3;i++){
+  createHeart()
+}
 function pause() {
+  if(mouseX > 10 && mouseX < 60 && mouseY > 10 && mouseY<60){
   paused = !paused;
   if (paused) {
     clearInterval(game);
   } else {
-    game = setInterval(createEgg, 1400);
+    game = setInterval(createEgg, 2100);
   }
 }
+}
+let mouseX;
+let mouseY;
+function onMouseMove(e) {
+  mouseX = e.clientX - canvas.offsetLeft;
+  mouseY = e.clientY - canvas.offsetTop;
+}
+
+canvas.addEventListener('mousemove',onMouseMove)
+canvas.addEventListener('click',pause)
 window.addEventListener("keydown", onKeyDown);
 window.addEventListener("keyup", onKeyUp);
 const keys = {};
 
-pauseBtn.addEventListener("click", pause);
+
 update();
+
 })
 // boss fight
