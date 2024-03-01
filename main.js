@@ -20,7 +20,7 @@ startBtn.addEventListener("click",()=>{
 
   document.body.appendChild(h1)
   h1.innerHTML = "score: "
-  let counter = 1000000;
+  let counter = 10;
   let bossF = false;
   
   const ctx = canvas.getContext("2d");
@@ -40,8 +40,10 @@ const eggImage = new Image();
 eggImage.src = "egg.png";
 const heartImage = new Image();
 heartImage.src = "serce.png"
-/* const Boss1Image = new Image();
-Boss1Image.src = "alfa_boss_1.png"; */
+const Boss1Image = new Image();
+Boss1Image.src = "alfa_boss_1.png";
+
+let lifes = 3;
 
 const spoiledEggImage = new Image();
 spoiledEggImage.src = "spoiledEgg.png";
@@ -58,7 +60,7 @@ function createHeart(){
 }
 function drawHeart(){
   hearts.forEach((heart)=>{
-    ctx.fillStyle = "red"
+    // ctx.fillStyle = "red"
     ctx.drawImage(heartImage,heart.x - 60,heart.y + 20,30,30)
    
   })
@@ -116,7 +118,7 @@ function drawPause(){
       points += 1;
       if(points>=counter){
         bossF = true;
-        counter = 999999;
+        counter = 9999999;
       }
     } else if(egg.y+40 >= canvas.height){
       eggs.shift();
@@ -130,6 +132,10 @@ function drawPause(){
         egg.y <= bunny.y
       ) {
         //do poprawy hitbox jajka
+        lifes-=1;
+        hearts.pop();
+        // console.log(lifes);
+        // console.log(hearts);
         badEggs.shift();
       } else if(egg.y+80 >= canvas.height){
         badEggs.shift();
