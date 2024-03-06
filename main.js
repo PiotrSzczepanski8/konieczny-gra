@@ -166,9 +166,17 @@ function drawBoss(){
   ctx.drawImage(Boss1Image, 0, 0, 1200, 100);
 }
 
+const bgGrass = new Image();
+bgGrass.src = "grass_bg.png"
+
+function drawBgGrass(){
+  ctx.drawImage(bgGrass, 0, canvas.height - 60, canvas.width, 60);
+}
+
 function update() {
   if (!paused) {
     ctx.clearRect(0, 0, 1200, 700);
+    drawBgGrass()
     if(bossF == true){
       drawBoss();
     }
