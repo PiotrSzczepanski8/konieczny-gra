@@ -1,8 +1,8 @@
 const startBtn = document.createElement("button")
 startBtn.innerHTML = "START"
 document.body.appendChild(startBtn);
-startBtn.style.backgroundColor = "rgb(6, 190, 231)"
-startBtn.style.color = "#0f0"
+startBtn.style.backgroundColor = "#990030"
+startBtn.style.color = "#ffc20e"
 startBtn.style.border = "none"
 startBtn.style.fontSize = "x-large"
 startBtn.style.padding = "1em"
