@@ -43,6 +43,9 @@ heartImage.src = "serce.png"
 const Boss1Image = new Image();
 Boss1Image.src = "alfa_boss_1.png";
 
+const grass = new Image();
+grass.src = "grass.png";
+
 let lifes = 3;
 
 const spoiledEggImage = new Image();
@@ -166,8 +169,6 @@ function drawBoss(){
 function update() {
   if (!paused) {
     ctx.clearRect(0, 0, 1200, 700);
-    ctx.fillStyle = "#0f0";
-    ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
     if(bossF == true){
       drawBoss();
     }
@@ -181,6 +182,7 @@ function update() {
       bunny.x += speed;
     }
     h1.innerHTML = `score: ${points}`;
+    ctx.drawImage(grass, 0, canvas.height - 40, canvas.width, 40);
   }
   requestAnimationFrame(update);
 }
