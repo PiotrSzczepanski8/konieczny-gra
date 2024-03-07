@@ -185,6 +185,18 @@ function drawBgGrass(){
   ctx.drawImage(bgGrass, 0, canvas.height - 60, canvas.width, 60);
 }
 
+let directory;
+let superBoost;
+let boost;
+let superBoostCooldown = false;
+let boostCooldown = false;
+function boostCooldownControl(){
+  boostCooldown = false;
+}
+function superBoostCooldownControl(){
+  superBoostCooldown = false;
+}
+
 function update() {
   if (!paused) {
     ctx.clearRect(0, 0, 1200, 700);
@@ -198,8 +210,41 @@ function update() {
     drawPause()
     if (keys["a"] && bunny.x > 0 + 50) {
       bunny.x -= speed;
-    } else if (keys["d"] && bunny.x < canvas.width - 50) {
+      directory = 'l';
+    }
+    if (keys["d"] && bunny.x < canvas.width - 50) {
       bunny.x += speed;
+      directory = 'r';
+    } 
+    if (keys["v"]){
+      superBoost = true;
+    }
+    if (keys["c"]){
+      boost = true;
+    }
+    if (superBoost == true && superBoostCooldown == false){
+      for (let i = 0; i < 10; i++) {
+                if(directory == 'r' && bunny.x + 85 <= canvas.width){
+                  bunny.x += 10;
+                }else if(directory == 'l' && bunny.x > 5){
+                  bunny.x -= 10;
+                }
+              }
+              superBoost = false;
+              superBoostCooldown = true;
+              setTimeout(superBoostCooldownControl, 7000);
+    }
+    if (boost == true && boostCooldown == false){
+      for (let i = 0; i < 10; i++) {
+                if(directory == 'r' && bunny.x + 85 <= canvas.width){
+                  bunny.x += 3;
+                }else if(directory == 'l' && bunny.x > 5){
+                  bunny.x -= 3;
+                }
+              }
+              boost = false;
+              boostCooldown = true;
+              setTimeout(boostCooldownControl, 3000);
     }
     h1.innerHTML = `score: ${points}`;
     ctx.drawImage(grass, 0, canvas.height - 40, canvas.width, 40);
