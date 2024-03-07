@@ -117,13 +117,19 @@ function drawPause(){
         egg.y <= bunny.y
         ) {
           //do poprawy hitbox jajka
-      eggs.shift();
+          egg.x = 999;
+          egg.y = 999;
+      console.log(eggs.length);
       points += 1;
       if(points>=counter){
         bossF = true;
         counter = 9999999;
       }
     } else if(egg.y+40 >= canvas.height){
+      egg.x = 999;
+      egg.y = 999;
+    }
+    if(eggs.length > 300){
       eggs.shift();
     }
     });
@@ -139,14 +145,20 @@ function drawPause(){
         hearts.pop();
         // console.log(lifes);
         // console.log(hearts);
-        badEggs.shift();
+        egg.x = 999;
+        egg.y = 999;
       } else if(egg.y+80 >= canvas.height){
-        badEggs.shift();
+        egg.x = 999;
+        egg.y = 999;
       }
   
       // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
       // egg.y += 1;
+      if(badEggs.length > 300){
+        badEggs.shift();
+      }
     });
+    
   }
 
 function drawEggs() {
@@ -205,7 +217,7 @@ function onKeyUp(e) {
 
 speed = 5;
 let paused = false;
-let game = setInterval(createEgg, 2100);
+let game = setInterval(createEgg, 100);
 for(let i = 0;i<3;i++){
   createHeart()
 }
@@ -215,7 +227,7 @@ function pause() {
   if (paused) {
     clearInterval(game);
   } else {
-    game = setInterval(createEgg, 2100);
+    game = setInterval(createEgg, 100);
   }
 }
 }
