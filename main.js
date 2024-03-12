@@ -1,10 +1,6 @@
 const startBtn = document.createElement("button");
 startBtn.innerHTML = "START";
 document.body.appendChild(startBtn);
-// startBtn.style.backgroundColor = "rgb(6, 190, 231)";
-// startBtn.style.color = "#0f0";
-// startBtn.style.border = "none";
-// startBtn.style.fontSize = "x-large";
 startBtn.style.padding = "1em";
 startBtn.style.border;
 let canvasE = false;
@@ -121,13 +117,18 @@ startBtn.addEventListener("click", () => {
         egg.y <= bunny.y
       ) {
         //do poprawy hitbox jajka
-        eggs.shift();
+        egg.x = 999;
+        egg.y = 999;
         points += 1;
         if (points >= counter) {
           bossF = true;
           counter = 9999999;
         }
       } else if (egg.y + 40 >= canvas.height) {
+        egg.x = 999;
+        egg.y = 999;
+      }
+      if(eggs.length > 300){
         eggs.shift();
       }
     });
@@ -142,14 +143,20 @@ startBtn.addEventListener("click", () => {
         hearts.pop();
         // console.log(lifes);
         // console.log(hearts);
-        badEggs.shift();
+        egg.x = 999;
+        egg.y = 999;
         lifes -= 1;
       } else if (egg.y + 80 >= canvas.height) {
-        badEggs.shift();
+        egg.x = 999;
+        egg.y = 999;
       }
 
       // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
       // egg.y += 1;
+
+      if(badEggs.length > 300){
+        badEggs.shift();
+      }
     });
   }
 
@@ -206,7 +213,11 @@ startBtn.addEventListener("click", () => {
       }
       h1.innerHTML = `score: ${points}`;
       progress = counter - points;
-      progressBar.innerHTML = `do bosa zostało ${progress}`;
+      if(progress < 10){
+        progressBar.innerHTML = `do bosa zostało ${progress}`;
+      }else{
+        progressBar.innerHTML = '';
+      }
       updatePrpgressBar((points / counter) * 100);
     }
     ctx.drawImage(grass, 0, canvas.height - 40, canvas.width, 40);
