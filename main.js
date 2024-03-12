@@ -1,6 +1,10 @@
 const startBtn = document.createElement("button");
 startBtn.innerHTML = "START";
 document.body.appendChild(startBtn);
+// startBtn.style.backgroundColor = "rgb(6, 190, 231)";
+// startBtn.style.color = "#0f0";
+// startBtn.style.border = "none";
+// startBtn.style.fontSize = "x-large";
 startBtn.style.padding = "1em";
 startBtn.style.border;
 let canvasE = false;
@@ -150,13 +154,11 @@ startBtn.addEventListener("click", () => {
         egg.x = 999;
         egg.y = 999;
       }
-
-      // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
-      // egg.y += 1;
-
       if(badEggs.length > 300){
         badEggs.shift();
       }
+      // ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
+      // egg.y += 1;
     });
   }
 
@@ -213,11 +215,7 @@ startBtn.addEventListener("click", () => {
       }
       h1.innerHTML = `score: ${points}`;
       progress = counter - points;
-      if(progress < 10){
-        progressBar.innerHTML = `do bosa zostało ${progress}`;
-      }else{
-        progressBar.innerHTML = '';
-      }
+      progressBar.innerHTML = `do bosa zostało ${progress}`;
       updatePrpgressBar((points / counter) * 100);
     }
     ctx.drawImage(grass, 0, canvas.height - 40, canvas.width, 40);
@@ -236,7 +234,7 @@ startBtn.addEventListener("click", () => {
   }
   speed = 5;
   let paused = false;
-  let game = setInterval(createEgg, 2100);
+  let game = setInterval(createEgg, 100);
   for (let i = 0; i < 3; i++) {
     createHeart();
   }
