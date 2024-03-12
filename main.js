@@ -1,10 +1,10 @@
 const startBtn = document.createElement("button");
 startBtn.innerHTML = "START";
 document.body.appendChild(startBtn);
-startBtn.style.backgroundColor = "rgb(6, 190, 231)";
-startBtn.style.color = "#0f0";
-startBtn.style.border = "none";
-startBtn.style.fontSize = "x-large";
+// startBtn.style.backgroundColor = "rgb(6, 190, 231)";
+// startBtn.style.color = "#0f0";
+// startBtn.style.border = "none";
+// startBtn.style.fontSize = "x-large";
 startBtn.style.padding = "1em";
 startBtn.style.border;
 let canvasE = false;
@@ -51,6 +51,7 @@ startBtn.addEventListener("click", () => {
   heartImage.src = "serce.png";
   const Boss1Image = new Image();
   Boss1Image.src = "alfa_boss_1.png";
+  
 
   let lifes = 3;
 
@@ -171,6 +172,9 @@ startBtn.addEventListener("click", () => {
   const bgGrass = new Image();
   bgGrass.src = "grass_bg.png";
 
+  const grass = new Image();
+  grass.src = "grass.png";
+
   function drawBgGrass() {
     ctx.drawImage(bgGrass, 0, canvas.height - 60, canvas.width, 60);
   }
@@ -178,8 +182,6 @@ startBtn.addEventListener("click", () => {
   function update() {
     if (!paused) {
       ctx.clearRect(0, 0, 1200, 700);
-      ctx.fillStyle = "#0f0";
-      ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
       if (bossF == true) {
         drawBoss();
       }
@@ -194,6 +196,7 @@ startBtn.addEventListener("click", () => {
           ctx.clearRect(0, 0, 1200, 700);
           startBtn.innerHTML = "restart";
           document.body.append(startBtn);
+          document.body.removeChild(canvas);
         }, 5);
       }
       if (keys["a"] && bunny.x > 0 + 50) {
@@ -206,6 +209,7 @@ startBtn.addEventListener("click", () => {
       progressBar.innerHTML = `do bosa zostało ${progress}`;
       updatePrpgressBar((points / counter) * 100);
     }
+    ctx.drawImage(grass, 0, canvas.height - 40, canvas.width, 40);
     requestAnimationFrame(update);
   }
 
