@@ -1,10 +1,6 @@
 const startBtn = document.createElement("button");
 startBtn.innerHTML = "START";
 document.body.appendChild(startBtn);
-// startBtn.style.backgroundColor = "rgb(6, 190, 231)";
-// startBtn.style.color = "#0f0";
-// startBtn.style.border = "none";
-// startBtn.style.fontSize = "x-large";
 startBtn.style.padding = "1em";
 startBtn.style.border;
 let canvasE = false;
@@ -138,9 +134,9 @@ startBtn.addEventListener("click", () => {
     });
     badEggs.forEach((egg) => {
       if (
-        egg.x >= bunny.x - bunny.size &&
-        egg.x + 60 <= bunny.x + bunny.size &&
-        egg.y + 80 >= bunny.y - 120 &&
+        egg.x >= bunny.x - bunny.size * 0.8 &&
+        egg.x + 60 <= bunny.x + bunny.size * 0.8 &&
+        egg.y + 80 >= bunny.y - 160 &&
         egg.y <= bunny.y
       ) {
         //do poprawy hitbox jajka
@@ -174,27 +170,6 @@ startBtn.addEventListener("click", () => {
       killEgg();
     });
   }
-  // strzelanie
-  let fireT = true;
-  let bullets = []
-  function fire(){
-    let bullet = {
-      x: bunny.x,
-      y: bunny.y,
-    };
-    bullets.push(bullet);
-  }
-  function drawBullet(){
-    bullets.forEach((bullet) => {
-      ctx.drawImage(eggImage, bullet.x, bullet.y, 30, 40);
-      bullet.y -= 2;
-    });
-  }
-  function nic(){
-    fireT = true;
-  }
-
-
 
   function drawBoss() {
     ctx.drawImage(Boss1Image, 0, 0, 1200, 100);
@@ -209,6 +184,33 @@ startBtn.addEventListener("click", () => {
     ctx.drawImage(bgGrass, 0, canvas.height - 60, canvas.width, 60);
   }
 
+  
+let directory;
+let superBoost;
+let boost;
+let superBoostCooldown = false;
+let boostCooldown = false;
+function boostCooldownControl(){
+  boostCooldown = false;
+}
+function superBoostCooldownControl(){
+  superBoostCooldown = false;
+}
+
+const dash = new Image();
+dash.src = 'dashRight.png';
+
+function drawBoost(){
+  if(directory == 'r'){
+    dash.src = 'dashRight.png';
+    ctx.drawImage(dash, bunny.x - 160, bunny.y - 120, 160, 160);
+  }
+  if(directory == 'l'){
+    dash.src = 'dashLeft.png';
+    ctx.drawImage(dash, bunny.x, bunny.y - 120, 160, 160);
+  }
+}
+
   function update() {
     if (!paused) {
       ctx.clearRect(0, 0, 1200, 700);
@@ -220,7 +222,6 @@ startBtn.addEventListener("click", () => {
       drawEggs();
       drawHeart();
       drawPause();
-      drawBullet();
       if (lifes <= 0) {
         setTimeout(() => {
           paused = true;
@@ -232,19 +233,58 @@ startBtn.addEventListener("click", () => {
       }
       if (keys["a"] && bunny.x > 0 + 50) {
         bunny.x -= speed;
-      } if (keys["d"] && bunny.x < canvas.width - 50) {
-        bunny.x += speed;
-      } if(keys[" "]&& fireT && points > 0){
-        fire();
-        fireT = false
-        points -= 1
-        setTimeout(nic,1000)
       }
-      h1.innerHTML = `score: ${points}`;
-      progress = counter - points;
-      progressBar.innerHTML = `do bosa zostało ${progress}`;
-      updatePrpgressBar((points / counter) * 100);
-    }
+      
+      if (keys["d"] && bunny.x < canvas.width - 50) {
+        bunny.x += speed;
+      }
+      
+      if (keys["a"] && bunny.x > 0 + 50) {
+        bunny.x -= speed;
+        directory = 'l';
+      }
+      if (keys["d"] && bunny.x < canvas.width - 50) {
+        bunny.x += speed;
+        directory = 'r';
+      } 
+      if (keys["v"] && superBoostCooldown == false){
+        superBoost = true;
+      }
+      if (keys["c"] && boostCooldown == false){
+        boost = true;
+      }
+      if (superBoost == true && superBoostCooldown == false){
+        for (let i = 0; i < 10; i++) {
+          if(directory == 'r' && bunny.x + 85 <= canvas.width){
+            bunny.x += 10;
+          }else if(directory == 'l' && bunny.x > 5){
+            bunny.x -= 10;
+          }
+        }
+        superBoost = false;
+        superBoostCooldown = true;
+        setTimeout(superBoostCooldownControl, 7000);
+      }
+      if (boost == true && boostCooldown == false){
+        drawBoost();
+        for (let i = 0; i < 10; i++) {
+          if(directory == 'r' && bunny.x + 85 <= canvas.width){
+                    bunny.x += 3;
+                  }else if(directory == 'l' && bunny.x > 5){
+                    bunny.x -= 3;
+                  }
+                }
+              }
+                boost = false;
+                boostCooldown = true;
+                setTimeout(boostCooldownControl, 3000);
+
+                h1.innerHTML = `score: ${points}`;
+                progress = counter - points;
+                progressBar.innerHTML = `do bosa zostało ${progress}`;
+                updatePrpgressBar((points / counter) * 100);
+              
+  }
     ctx.drawImage(grass, 0, canvas.height - 40, canvas.width, 40);
     requestAnimationFrame(update);
   }
@@ -261,7 +301,7 @@ startBtn.addEventListener("click", () => {
   }
   speed = 5;
   let paused = false;
-  let game = setInterval(createEgg, 1000);
+  let game = setInterval(createEgg, 100);
   for (let i = 0; i < 3; i++) {
     createHeart();
   }
