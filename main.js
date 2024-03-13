@@ -85,6 +85,7 @@ startBtn.addEventListener("click", () => {
     );
   }
 
+  // jajka
   let eggs = [];
   let badEggs = [];
 
@@ -187,17 +188,50 @@ startBtn.addEventListener("click", () => {
   function drawBullet(){
     bullets.forEach((bullet) => {
       ctx.drawImage(eggImage, bullet.x, bullet.y, 30, 40);
-      bullet.y -= 2;
+      bullet.y -= 5;
     });
   }
   function nic(){
     fireT = true;
   }
+  function killBullet(){
+      bullets.forEach((bullet) => {
+        if (
+          bullet.y <= 100 &&
+          bullet.y >=0
+        ) {
+          //do poprawy hitbox jajka
+          bullet.x = 999;
+          bullet.y = 1000;
+          bossHP -=1;
+        if(bullets.length > 300){
+          bullets.shift();
+        }
+      }
+      if (
+        bullet.y >canvas.height
+      ) {
+        //do poprawy hitbox jajka
+        bullet.x = 999;
+        bullet.y = 1000;
+      if(bullets.length > 300){
+        bullets.shift();
+      }
+    }
+    });
+  }
 
 
 
+// boss
+let bossHP = 10;
   function drawBoss() {
     ctx.drawImage(Boss1Image, 0, 0, 1200, 100);
+    
+    if(bossHP <= 0){
+      bossF = false;
+    }
+    console.log(bossHP)
   }
   const bgGrass = new Image();
   bgGrass.src = "grass_bg.png";
@@ -221,6 +255,7 @@ startBtn.addEventListener("click", () => {
       drawHeart();
       drawPause();
       drawBullet();
+      killBullet();
       if (lifes <= 0) {
         setTimeout(() => {
           paused = true;
@@ -271,7 +306,7 @@ startBtn.addEventListener("click", () => {
       if (paused) {
         clearInterval(game);
       } else {
-        game = setInterval(createEgg, 2100);
+        game = setInterval(createEgg, 1000);
       }
     }
   }
