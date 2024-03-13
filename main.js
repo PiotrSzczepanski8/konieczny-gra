@@ -138,9 +138,9 @@ startBtn.addEventListener("click", () => {
     });
     badEggs.forEach((egg) => {
       if (
-        egg.x >= bunny.x - bunny.size * 0.8 &&
-        egg.x + 60 <= bunny.x + bunny.size * 0.8 &&
-        egg.y + 80 >= bunny.y - 160 &&
+        egg.x >= bunny.x - bunny.size &&
+        egg.x + 60 <= bunny.x + bunny.size &&
+        egg.y + 80 >= bunny.y - 120 &&
         egg.y <= bunny.y
       ) {
         //do poprawy hitbox jajka
@@ -174,6 +174,27 @@ startBtn.addEventListener("click", () => {
       killEgg();
     });
   }
+  // strzelanie
+  let fireT = true;
+  let bullets = []
+  function fire(){
+    let bullet = {
+      x: bunny.x,
+      y: bunny.y,
+    };
+    bullets.push(bullet);
+  }
+  function drawBullet(){
+    bullets.forEach((bullet) => {
+      ctx.drawImage(eggImage, bullet.x, bullet.y, 30, 40);
+      bullet.y -= 2;
+    });
+  }
+  function nic(){
+    fireT = true;
+  }
+
+
 
   function drawBoss() {
     ctx.drawImage(Boss1Image, 0, 0, 1200, 100);
@@ -199,6 +220,7 @@ startBtn.addEventListener("click", () => {
       drawEggs();
       drawHeart();
       drawPause();
+      drawBullet();
       if (lifes <= 0) {
         setTimeout(() => {
           paused = true;
@@ -210,8 +232,13 @@ startBtn.addEventListener("click", () => {
       }
       if (keys["a"] && bunny.x > 0 + 50) {
         bunny.x -= speed;
-      } else if (keys["d"] && bunny.x < canvas.width - 50) {
+      } if (keys["d"] && bunny.x < canvas.width - 50) {
         bunny.x += speed;
+      } if(keys[" "]&& fireT && points > 0){
+        fire();
+        fireT = false
+        points -= 1
+        setTimeout(nic,1000)
       }
       h1.innerHTML = `score: ${points}`;
       progress = counter - points;
@@ -234,7 +261,7 @@ startBtn.addEventListener("click", () => {
   }
   speed = 5;
   let paused = false;
-  let game = setInterval(createEgg, 100);
+  let game = setInterval(createEgg, 1000);
   for (let i = 0; i < 3; i++) {
     createHeart();
   }
