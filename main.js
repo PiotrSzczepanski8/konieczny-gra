@@ -22,12 +22,10 @@ startBtn.addEventListener("click", () => {
   div = document.createElement("div");
   canvas = document.createElement("canvas");
   h1 = document.createElement("h1");
-
   
   document.body.appendChild(div)
   div.appendChild(canvas);
   div.classList += "container";
-
   canvas.width = 1200;
   canvas.height = 700;
 
@@ -38,7 +36,6 @@ startBtn.addEventListener("click", () => {
   progressBar.classList += "progress"
   let counter = 10;
   let bossF = false;
-
   const ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
 
@@ -58,8 +55,6 @@ startBtn.addEventListener("click", () => {
   heartImage.src = "serce.png";
   const Boss1Image = new Image();
   Boss1Image.src = "alfa_boss_1.png";
-  const bulletImg = new Image();
-  bulletImg.src = "bullet.png";
   
 
   let lifes = 3;
@@ -136,6 +131,7 @@ startBtn.addEventListener("click", () => {
         points += 1;
         if (points >= counter) {
           bossF = true;
+          
         }
       } else if (egg.y + 40 >= canvas.height) {
         egg.x = 999;
@@ -174,7 +170,7 @@ startBtn.addEventListener("click", () => {
   function drawEggs() {
     eggs.forEach((egg) => {
       ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
-      egg.y += eggY
+      egg.y += eggY;
       killEgg();
     });
     badEggs.forEach((egg) => {
@@ -195,7 +191,7 @@ startBtn.addEventListener("click", () => {
   }
   function drawBullet(){
     bullets.forEach((bullet) => {
-      ctx.drawImage(bulletImg, bullet.x, bullet.y, 30, 40);
+      ctx.drawImage(eggImage, bullet.x, bullet.y, 30, 40);
       bullet.y -= 5;
     });
   }
@@ -211,7 +207,10 @@ startBtn.addEventListener("click", () => {
           //do poprawy hitbox jajka
           bullet.x = 999;
           bullet.y = 1000;
-          bossHP -=1;
+          if(bossF == true){
+            bossHP -=1;
+
+          }
         if(bullets.length > 300){
           bullets.shift();
         }
@@ -251,7 +250,7 @@ let deleteShield = true;
       counter *= 4
       bossHP = maxBossHP;
     }
-    console.log(bossHP)
+    
   }
   function createShield() {
     let shield = {
@@ -285,7 +284,6 @@ let deleteShield = true;
     });
     deleteShield = true;
   }
-
   const bgGrass = new Image();
   bgGrass.src = "grass_bg.png";
 
@@ -302,24 +300,24 @@ let deleteShield = true;
       if (bossF == true) {
         drawBoss(); 
         progressBar.style.backgroundColor= "red";
-        progressBar.innerHTML = bossHP/maxBossHP*100 + "%"
+        progressBar.innerHTML = Math.round(bossHP/maxBossHP*100) + "%"
         updatePrpgressBar(bossHP/maxBossHP*100)
         if(shields.length < 1){
           for(let a = 0;a < 5;a++){
             createShield();
           }
           idShield = getRandomInt(5,0);
-          
+
         }
         if(shields.length > 1){
           if(deleteShield == true){
             deleteShield = false;
             setTimeout(randShield,1000);
-          
+
           }
         }
+        drawShield();
       }  
-      drawShield();
       drawBgGrass();
       drawBunny();
       drawEggs();
@@ -349,9 +347,8 @@ let deleteShield = true;
       }
       h1.innerHTML = `score: ${points}`;
       if(bossF == false){
-
         progress = counter - points;
-        progressBar.innerHTML = `do bosa zostało ${Math.round(progress)}`;
+        progressBar.innerHTML = `do bosa zostało ${progress}`;
         progressBar.style.backgroundColor = "royalblue"
         updatePrpgressBar((points / counter) * 100);
       }
@@ -392,23 +389,23 @@ let deleteShield = true;
     mouseX = e.clientX - canvas.offsetLeft;
     mouseY = e.clientY - canvas.offsetTop;
   }
-  setInterval(()=>{
-    if(!paused){
-  
-      if(speed<6){
-        speed+= 0.00015;
-        eggY += 0.00005;
-        BeggY += 0.00002;
-      }else if((speed>6) && (speed<8)){
-        speed += 0.0008
-        eggY += 0.00003;
-        BeggY += 0.00001;
-      }
+
+setInterval(()=>{
+  if(!paused){
+
+    if(speed<6){
+      speed+= 0.00015;
+      eggY += 0.00005;
+      BeggY += 0.00002;
+    }else if((speed>6) && (speed<8)){
+      speed += 0.0008
+      eggY += 0.00003;
+      BeggY += 0.00001;
     }
-  
-    },2)
-  
-  
+  }
+    
+  },2)
+
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("click", pause);
   window.addEventListener("keydown", onKeyDown);
