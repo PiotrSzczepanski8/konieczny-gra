@@ -58,6 +58,8 @@ startBtn.addEventListener("click", () => {
   heartImage.src = "serce.png";
   const Boss1Image = new Image();
   Boss1Image.src = "alfa_boss_1.png";
+  const bulletImg = new Image();
+  bulletImg.src = "bullet.png";
   
 
   let lifes = 3;
@@ -193,7 +195,7 @@ startBtn.addEventListener("click", () => {
   }
   function drawBullet(){
     bullets.forEach((bullet) => {
-      ctx.drawImage(eggImage, bullet.x, bullet.y, 30, 40);
+      ctx.drawImage(bulletImg, bullet.x, bullet.y, 30, 40);
       bullet.y -= 5;
     });
   }
@@ -345,8 +347,9 @@ let deleteShield = true;
         points -= 1
         setTimeout(nic,1000)
       }
+      h1.innerHTML = `score: ${points}`;
       if(bossF == false){
-        h1.innerHTML = `score: ${points}`;
+
         progress = counter - points;
         progressBar.innerHTML = `do bosa zostało ${Math.round(progress)}`;
         progressBar.style.backgroundColor = "royalblue"
