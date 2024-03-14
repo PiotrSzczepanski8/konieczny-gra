@@ -148,15 +148,16 @@ startBtn.addEventListener("click", () => {
         egg.x >= bunny.x - bunny.size &&
         egg.x + 60 <= bunny.x + bunny.size &&
         egg.y + 80 >= bunny.y - 120 &&
-        egg.y <= bunny.y
+        egg.y <= bunny.y &&
+        boost == false
       ) {
         //do poprawy hitbox jajka
-        hearts.pop();
         // console.log(lifes);
         // console.log(hearts);
-        egg.x = 999;
-        egg.y = 999;
-        lifes -= 1;
+          egg.x = 999;
+          egg.y = 999;
+          hearts.pop();
+          lifes -= 1;
       } else if (egg.y + 80 >= canvas.height) {
         egg.x = 999;
         egg.y = 999;
@@ -302,6 +303,26 @@ let deleteShield = true;
   function drawBgGrass() {
     ctx.drawImage(bgGrass, 0, canvas.height - 60, canvas.width, 60);
   }
+  let directory;
+let boost;
+let boostCooldown = false;
+
+const dash = new Image();
+dash.src = 'dashRight.png';
+
+const dash_available = new Image();
+dash_available.src = 'dash_available.png';
+
+function drawBoost(){
+  if(directory == 'r'){
+    dash.src = 'dashRight.png';
+    ctx.drawImage(dash, bunny.x - 160, bunny.y - 120, 160, 160);
+  }
+  if(directory == 'l'){
+    dash.src = 'dashLeft.png';
+    ctx.drawImage(dash, bunny.x, bunny.y - 120, 160, 160);
+  }
+}
 
   function update() {
     if (!paused) {
@@ -345,11 +366,43 @@ let deleteShield = true;
           div.removeChild(progressBar)
         }, 5);
       }
+      
       if (keys["a"] && bunny.x > 0 + 50) {
-        bunny.x -= speed;
-      } if (keys["d"] && bunny.x < canvas.width - 50) {
-        bunny.x += speed;
-      } if(keys[" "]&& fireT && points > 0){
+        if(boost){
+          bunny.x -= speed*3;
+          drawBoost();
+        } else {
+          bunny.x -= speed;
+        }
+        directory = 'l';
+      }
+      
+      if (keys["d"] && bunny.x < canvas.width - 50) {
+        if(boost){
+          bunny.x += speed*3;
+          drawBoost();
+        } else {
+          bunny.x += speed;
+        }
+        directory = 'r';
+      }
+
+      if (keys["Shift"] && boostCooldown == false){
+        boostCooldown = true;
+        setTimeout(() => {
+          boost = false;
+        }, 1000);
+        setTimeout(() => {
+          boostCooldown = false;
+        }, 3000);
+        boost = true;
+      }
+
+      if(boostCooldown == false){
+        ctx.drawImage(dash_available, 1140, 60, 30, 30);
+      }
+      
+      if(keys[" "]&& fireT && points > 0){
         fire();
         fireT = false
         points -= 1
