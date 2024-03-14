@@ -8,8 +8,9 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column-reverse;
+ 
 }
-div {
+.progress {
   width: 0%;
   height: 50px;
   background-color: royalblue;
