@@ -22,10 +22,12 @@ startBtn.addEventListener("click", () => {
   div = document.createElement("div");
   canvas = document.createElement("canvas");
   h1 = document.createElement("h1");
+
   
   document.body.appendChild(div)
   div.appendChild(canvas);
   div.classList += "container";
+
   canvas.width = 1200;
   canvas.height = 700;
 
@@ -36,6 +38,7 @@ startBtn.addEventListener("click", () => {
   progressBar.classList += "progress"
   let counter = 10;
   let bossF = false;
+
   const ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
 
@@ -131,7 +134,6 @@ startBtn.addEventListener("click", () => {
         points += 1;
         if (points >= counter) {
           bossF = true;
-          
         }
       } else if (egg.y + 40 >= canvas.height) {
         egg.x = 999;
@@ -170,7 +172,7 @@ startBtn.addEventListener("click", () => {
   function drawEggs() {
     eggs.forEach((egg) => {
       ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
-      egg.y += eggY;
+      egg.y += eggY
       killEgg();
     });
     badEggs.forEach((egg) => {
@@ -250,7 +252,7 @@ let deleteShield = true;
       counter *= 4
       bossHP = maxBossHP;
     }
-    
+    console.log(bossHP)
   }
   function createShield() {
     let shield = {
@@ -284,6 +286,13 @@ let deleteShield = true;
     });
     deleteShield = true;
   }
+  function killShield() {
+    shields.forEach((shield) => {
+      // ctx.fillStyle = "red"
+      shield.v = 0;
+    });
+  }
+
   const bgGrass = new Image();
   bgGrass.src = "grass_bg.png";
 
@@ -307,17 +316,18 @@ let deleteShield = true;
             createShield();
           }
           idShield = getRandomInt(5,0);
-
+          
         }
         if(shields.length > 1){
           if(deleteShield == true){
             deleteShield = false;
             setTimeout(randShield,1000);
-
+          
           }
         }
-        drawShield();
+        
       }  
+      drawShield();
       drawBgGrass();
       drawBunny();
       drawEggs();
@@ -347,8 +357,9 @@ let deleteShield = true;
       }
       h1.innerHTML = `score: ${points}`;
       if(bossF == false){
+        killShield();
         progress = counter - points;
-        progressBar.innerHTML = `do bosa zostało ${progress}`;
+        progressBar.innerHTML = `do bosa zostało ${Math.round(progress)}`;
         progressBar.style.backgroundColor = "royalblue"
         updatePrpgressBar((points / counter) * 100);
       }
@@ -389,23 +400,23 @@ let deleteShield = true;
     mouseX = e.clientX - canvas.offsetLeft;
     mouseY = e.clientY - canvas.offsetTop;
   }
-
-setInterval(()=>{
-  if(!paused){
-
-    if(speed<6){
-      speed+= 0.00015;
-      eggY += 0.00005;
-      BeggY += 0.00002;
-    }else if((speed>6) && (speed<8)){
-      speed += 0.0008
-      eggY += 0.00003;
-      BeggY += 0.00001;
+  setInterval(()=>{
+    if(!paused){
+  
+      if(speed<6){
+        speed+= 0.00015;
+        eggY += 0.00005;
+        BeggY += 0.00002;
+      }else if((speed>6) && (speed<8)){
+        speed += 0.0008
+        eggY += 0.00003;
+        BeggY += 0.00001;
+      }
     }
-  }
-    
-  },2)
-
+  
+    },2)
+  
+  
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("click", pause);
   window.addEventListener("keydown", onKeyDown);
