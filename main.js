@@ -8,6 +8,8 @@ document.body.appendChild(startBtn);
 startBtn.style.padding = "1em";
 startBtn.style.border;
 let canvasE = false;
+let BeggY = 1;
+let eggY = 2;
 let canvas, h1, progressBar, progress;
 startBtn.addEventListener("click", () => {
   startBtn.remove();
@@ -166,12 +168,12 @@ startBtn.addEventListener("click", () => {
   function drawEggs() {
     eggs.forEach((egg) => {
       ctx.drawImage(eggImage, egg.x, egg.y, 30, 40);
-      egg.y += 2;
+      egg.y += eggY;
       killEgg();
     });
     badEggs.forEach((egg) => {
       ctx.drawImage(spoiledEggImage, egg.x, egg.y, 60, 80);
-      egg.y += 1;
+      egg.y += BeggY;
       killEgg();
     });
   }
@@ -316,6 +318,22 @@ let bossHP = 10;
     mouseX = e.clientX - canvas.offsetLeft;
     mouseY = e.clientY - canvas.offsetTop;
   }
+
+setInterval(()=>{
+  if(!paused){
+
+    if(speed<6){
+      speed+= 0.00015;
+      eggY += 0.00005;
+      BeggY += 0.00002;
+    }else if((speed>6) && (speed<8)){
+      speed += 0.0008
+      eggY += 0.00003;
+      BeggY += 0.00001;
+    }
+  }
+    
+  },2)
 
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("click", pause);
