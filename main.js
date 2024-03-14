@@ -10,7 +10,7 @@ startBtn.style.border;
 let canvasE = false;
 let BeggY = 1;
 let eggY = 2;
-let canvas, h1, progressBar, progress;
+let canvas, h1, progressBar, progress,div;
 startBtn.addEventListener("click", () => {
   startBtn.remove();
   if (canvasE) {
@@ -19,21 +19,23 @@ startBtn.addEventListener("click", () => {
   }
   canvasE = true;
   let points = 0;
+  div = document.createElement("div");
   canvas = document.createElement("canvas");
   h1 = document.createElement("h1");
-
-  document.body.appendChild(canvas);
-
+  
+  document.body.appendChild(div)
+  div.appendChild(canvas);
+  div.classList += "container";
   canvas.width = 1200;
   canvas.height = 700;
 
   document.body.appendChild(h1);
   h1.innerHTML = "score: ";
   progressBar = document.createElement("div");
-  document.body.appendChild(progressBar);
+  div.appendChild(progressBar);
+  progressBar.classList += "progress"
   let counter = 10;
   let bossF = false;
-
   const ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
 
@@ -129,7 +131,7 @@ startBtn.addEventListener("click", () => {
         points += 1;
         if (points >= counter) {
           bossF = true;
-          counter = 9999999;
+          
         }
       } else if (egg.y + 40 >= canvas.height) {
         egg.x = 999;
@@ -227,13 +229,17 @@ startBtn.addEventListener("click", () => {
 
 // boss
 let bossHP = 10;
+let maxBossHP = 10;
   function drawBoss() {
     ctx.drawImage(Boss1Image, 0, 0, 1200, 100);
     
     if(bossHP <= 0){
       bossF = false;
+      maxBossHP*=1.4
+      counter *= 4
+      bossHP = maxBossHP;
     }
-    console.log(bossHP)
+    
   }
   const bgGrass = new Image();
   bgGrass.src = "grass_bg.png";
@@ -249,7 +255,10 @@ let bossHP = 10;
     if (!paused) {
       ctx.clearRect(0, 0, 1200, 700);
       if (bossF == true) {
-        drawBoss();
+        drawBoss(); 
+        progressBar.style.backgroundColor= "red";
+        progressBar.innerHTML = bossHP/maxBossHP*100 + "%"
+        updatePrpgressBar(bossHP/maxBossHP*100)
       }
       drawBgGrass();
       drawBunny();
@@ -264,7 +273,8 @@ let bossHP = 10;
           ctx.clearRect(0, 0, 1200, 700);
           startBtn.innerHTML = "restart";
           document.body.append(startBtn);
-          document.body.removeChild(canvas);
+          div.removeChild(canvas);
+          div.removeChild(progressBar)
         }, 5);
       }
       if (keys["a"] && bunny.x > 0 + 50) {
@@ -277,11 +287,14 @@ let bossHP = 10;
         points -= 1
         setTimeout(nic,1000)
       }
-      h1.innerHTML = `score: ${points}`;
-      progress = counter - points;
-      progressBar.innerHTML = `do bosa zostało ${progress}`;
-      updatePrpgressBar((points / counter) * 100);
-    }
+      if(bossF == false){
+        h1.innerHTML = `score: ${points}`;
+        progress = counter - points;
+        progressBar.innerHTML = `do bosa zostało ${Math.round(progress)}`;
+        progressBar.style.backgroundColor = "royalblue"
+        updatePrpgressBar((points / counter) * 100);
+      }
+      }
     ctx.drawImage(grass, 0, canvas.height - 40, canvas.width, 40);
     requestAnimationFrame(update);
   }
