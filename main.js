@@ -150,7 +150,8 @@ startBtn.addEventListener("click", () => {
         egg.x >= bunny.x - bunny.size &&
         egg.x + 60 <= bunny.x + bunny.size &&
         egg.y + 80 >= bunny.y - 120 &&
-        egg.y <= bunny.y
+        egg.y <= bunny.y &&
+        boost == false
       ) {
         //do poprawy hitbox jajka
         hearts.pop();
