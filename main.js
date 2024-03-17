@@ -77,7 +77,11 @@ startBtn.addEventListener("click", () => {
   function drawHeart() {
     hearts.forEach((heart) => {
       // ctx.fillStyle = "red"
-      ctx.drawImage(heartImage, heart.x - 60, heart.y + 20, 30, 30);
+      if(death){
+        ctx.drawImage(heartImage, heart.x - 60, heart.y + 20, 30, 30);
+      }else{
+        ctx.drawImage(heartImage, heart.x - 60, heart.y + 20, 30, 30);
+      }
     });
   }
 
@@ -150,8 +154,8 @@ startBtn.addEventListener("click", () => {
         egg.x >= bunny.x - bunny.size &&
         egg.x + 60 <= bunny.x + bunny.size &&
         egg.y + 80 >= bunny.y - 120 &&
-        egg.y <= bunny.y &&
-        boost == false
+        egg.y <= bunny.y 
+        //  boost == false
       ) {
         //do poprawy hitbox jajka
         hearts.pop();
@@ -254,6 +258,15 @@ let shields = []
 let idShield = 0;
 let deleteShield = true;
   function drawBoss() {
+    if(death){
+      ctx.drawImage(deathImg, 0, 0, bossW, bossH);
+      if(bossHP <= 0){
+        bossF = false;
+        maxBossHP=(maxBossHP-100)*1.4
+        counter *= 4
+        bossHP = maxBossHP;
+      }
+    } else{
     ctx.drawImage(Boss1Image, 0, 0, bossW, bossH);
     
     if(bossHP <= 0){
@@ -263,6 +276,7 @@ let deleteShield = true;
       bossHP = maxBossHP;
     }
     console.log(bossHP)
+  }
   }
   function createShield() {
     let shield = {
@@ -283,6 +297,8 @@ let deleteShield = true;
     });
   }
   function randShield(){
+    if(!death){
+    
     shields.forEach((shield) => {
       if(shield.id == idShield){
         shield.v = 1;   
@@ -295,6 +311,8 @@ let deleteShield = true;
       }
     });
     deleteShield = true;
+      
+  }
   }
   function killShield() {
     shields.forEach((shield) => {
@@ -302,6 +320,41 @@ let deleteShield = true;
       shield.v = 0;
     });
   }
+  const deathImg = new Image();
+  deathImg.src = "smierc.png";
+  let death = false;
+  
+  // smierc
+  function noHP(){
+    if (lifes <= 0 && death == false) {
+      bossF = true;
+      death = true;
+      lifes = 3;
+      maxBossHP = 100;
+      bossHP = maxBossHP;
+      shields.forEach((shield) => {
+          shield.v = 0; 
+      });
+      heartx = 1200;
+      for (let i = 0; i < lifes; i++) {
+        createHeart();
+      }
+    } else if(lifes <= 0 && death == true){
+      setTimeout(() => {
+        paused = true;
+        ctx.clearRect(0, 0, 1200, 700);
+        startBtn.innerHTML = "restart";
+        document.body.append(startBtn);
+        div.removeChild(canvas);
+        div.removeChild(progressBar)
+      }, 5);
+    }
+  }
+  function deathFight(){
+
+  }
+
+
 
   const bgGrass = new Image();
   bgGrass.src = "grass_bg.png";
@@ -342,40 +395,40 @@ let deleteShield = true;
         progressBar.style.backgroundColor= "red";
         progressBar.innerHTML = Math.round(bossHP/maxBossHP*100) + "%"
         updatePrpgressBar(bossHP/maxBossHP*100)
-        if(shields.length < 1){
-          for(let a = 0;a < 5;a++){
-            createShield();
+        if(!death){
+          if(shields.length < 1){
+            for(let a = 0;a < 5;a++){
+              createShield();
+            }
+            idShield = getRandomInt(5,0);
+          
           }
-          idShield = getRandomInt(5,0);
+          if(shields.length > 1){
+            if(deleteShield == true){
+              deleteShield = false;
+              setTimeout(randShield,1000);
           
-        }
-        if(shields.length > 1){
-          if(deleteShield == true){
-            deleteShield = false;
-            setTimeout(randShield,1000);
-          
+            }
           }
         }
         
       }  
-      drawShield();
+      if(!death){
+        drawShield();
+      }
+      
       drawBgGrass();
       drawBunny();
       drawEggs();
       drawHeart();
       drawPause();
+      if(death){
+        deathFight();
+      }
       drawBullet();
       killBullet();
-      if (lifes <= 0) {
-        setTimeout(() => {
-          paused = true;
-          ctx.clearRect(0, 0, 1200, 700);
-          startBtn.innerHTML = "restart";
-          document.body.append(startBtn);
-          div.removeChild(canvas);
-          div.removeChild(progressBar)
-        }, 5);
-      }
+      noHP();
+      
       if (keys["a"] && bunny.x > 0 + 50) {
         if(boost){
           bunny.x -= speed*3;
