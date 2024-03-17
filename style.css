@@ -8,17 +8,23 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column-reverse;
- 
+
+  background-color: #990030;
 }
 .progress {
   width: 0%;
   height: 50px;
-  background-color: royalblue;
+  background-color: #ffc20e;
+  color: #990030;
   border-radius: 8px;
   transition: width 0.5s ease-in-out;
   text-align: center;
   line-height: 50px;
-  color: white;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 0.05rem;
 }
 h1,
 button {
@@ -31,4 +37,41 @@ button {
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   letter-spacing: 0.2rem;
   cursor: pointer;
+}
+ul {
+  list-style-type: none;
+  padding: 1em;
+  margin: none;
+  text-align: center;
+  color: #ffc20e;
+  background-color: #990030;
+}
+li {
+  padding: 0.1em;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ffc20e;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  font-size: 1.4rem;
+}
+input {
+  margin: 0.5rem;
+  margin-bottom: none;
+}
+#error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ffc20e;
+  border-radius: 1rem;
+
+  font-size: 1.2rem;
+}
+form {
+  display: flex;
+  flex-direction: column;
 }

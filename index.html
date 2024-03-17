@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form action="#">
+      <label for="name">
+        Wprowadź swój nick
+        <input type="text" id="name" name="name" required />
+      </label>
+      <p id="error"></p>
+      <button type="submit" class="submit">OK</button>
+    </form>
     <script defer src="main.js"></script>
-</body>
+  </body>
 </html>

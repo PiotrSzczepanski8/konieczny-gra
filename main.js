@@ -377,7 +377,7 @@ form.addEventListener("submit", (e) => {
           bossF = true;
           death = true;
           lifes = 3;
-          maxBossHP = 100;
+          maxBossHP = 60;
           bossHP = maxBossHP;
           shields.forEach((shield) => {
             shield.v = 0;
@@ -454,7 +454,7 @@ form.addEventListener("submit", (e) => {
             if (shields.length > 1) {
               if (deleteShield == true) {
                 deleteShield = false;
-                setTimeout(randShield, 1000);
+                setTimeout(randShield, 3000);
               }
             }
           }
@@ -500,7 +500,7 @@ form.addEventListener("submit", (e) => {
             }, 1000);
             setTimeout(() => {
               boostCooldown = false;
-            }, 3000);
+            }, );
             boost = true;
           }
 
@@ -519,7 +519,7 @@ form.addEventListener("submit", (e) => {
             killShield();
             progress = counter - points;
             progressBar.innerHTML = `do bosa zostało ${Math.round(progress)}`;
-            progressBar.style.backgroundColor = "royalblue";
+            progressBar.style.backgroundColor = "#ffc20e";
             updatePrpgressBar((points / counter) * 100);
           }
         }
