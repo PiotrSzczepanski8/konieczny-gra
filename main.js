@@ -28,7 +28,7 @@ form.addEventListener("submit", (e) => {
           name: key,
           score: value,
         };
-        console.log(player.score);
+
         players.push(player);
       }
     }
@@ -202,22 +202,24 @@ form.addEventListener("submit", (e) => {
           }
         });
         badEggs.forEach((egg) => {
-          if (
-            egg.x >= bunny.x - bunny.size &&
-            egg.x + 60 <= bunny.x + bunny.size &&
-            egg.y + 80 >= bunny.y - 120 &&
-            egg.y <= bunny.y
-          ) {
-            //do poprawy hitbox jajka
-            hearts.pop();
-            // console.log(lifes);
-            // console.log(hearts);
-            egg.x = 999;
-            egg.y = 999;
-            lifes -= 1;
-          } else if (egg.y + 80 >= canvas.height) {
-            egg.x = 999;
-            egg.y = 999;
+          if (!boost) {
+            if (
+              egg.x >= bunny.x - bunny.size &&
+              egg.x + 60 <= bunny.x + bunny.size &&
+              egg.y + 80 >= bunny.y - 120 &&
+              egg.y <= bunny.y
+            ) {
+              //do poprawy hitbox jajka
+              hearts.pop();
+              // console.log(lifes);
+              // console.log(hearts);
+              egg.x = 999;
+              egg.y = 999;
+              lifes -= 1;
+            } else if (egg.y + 80 >= canvas.height) {
+              egg.x = 999;
+              egg.y = 999;
+            }
           }
           if (badEggs.length > 300) {
             badEggs.shift();
@@ -475,7 +477,7 @@ form.addEventListener("submit", (e) => {
           noHP();
           if (keys["a"] && bunny.x > 0 + 50) {
             if (boost) {
-              bunny.x -= speed * 3;
+              bunny.x -= speed * 2.5;
               drawBoost();
             } else {
               bunny.x -= speed;
@@ -485,7 +487,7 @@ form.addEventListener("submit", (e) => {
 
           if (keys["d"] && bunny.x < canvas.width - 50) {
             if (boost) {
-              bunny.x += speed * 3;
+              bunny.x += speed * 2.5;
               drawBoost();
             } else {
               bunny.x += speed;
@@ -497,10 +499,10 @@ form.addEventListener("submit", (e) => {
             boostCooldown = true;
             setTimeout(() => {
               boost = false;
-            }, 1000);
+            }, 280);
             setTimeout(() => {
               boostCooldown = false;
-            }, );
+            }, 5500);
             boost = true;
           }
 
