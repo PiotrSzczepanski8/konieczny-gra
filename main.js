@@ -1,6 +1,7 @@
 const startBtn = document.createElement("button");
 const form = document.querySelector("form");
 const errorField = document.querySelector("#error");
+const players = [];
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -9,14 +10,14 @@ form.addEventListener("submit", (e) => {
   if(!localStorage.getItem("names")){
     localStorage.setItem("names", "[]") // add an empty array of users
   }
-
+  
   let names = JSON.parse(localStorage.getItem("names"));
-
+  
   if (names.includes(name)) {
     errorField.innerHTML = "Ten nick jest już zajęty";
   } else {
     names.push(name);
-
+    
     localStorage.setItem("names", JSON.stringify(names));
     form.remove();
     startBtn.innerHTML = "START";
@@ -24,15 +25,14 @@ form.addEventListener("submit", (e) => {
     startBtn.style.padding = "1em";
     const ul = document.createElement("ul");
     document.body.appendChild(ul);
-
-    let players = [];
+    
     for (const [key, value] of Object.entries(localStorage)) {
       if (!(key == "names")) {
         let player = {
           name: key,
           score: value,
         };
-
+        console.log(player);
         players.push(player);
       }
     }
@@ -50,10 +50,11 @@ form.addEventListener("submit", (e) => {
     p.innerHTML = "TOP GRACZE";
     ul.appendChild(p);
     let j = 1;
+    let k = players.length;
     for (let i = 5; i > 0; i--) {
       let li = document.createElement("li");
-      let k = players.length;
-      li.innerHTML = players[k - j].name + " : " + players[k - j].score;
+      k = players.length;
+      li.innerHTML = players[k-j].name + " : " + players[k-j].score;
       j++;
       ul.appendChild(li);
     }
