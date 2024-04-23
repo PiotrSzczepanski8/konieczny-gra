@@ -5,6 +5,10 @@ const errorField = document.querySelector("#error");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   let name = document.getElementById("name").value;
+  
+  if(!localStorage.getItem("names")){
+    localStorage.setItem("names", "[]") // add an empty array of users
+  }
 
   let names = JSON.parse(localStorage.getItem("names"));
 
