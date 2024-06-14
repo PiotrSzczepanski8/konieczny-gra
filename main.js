@@ -133,11 +133,12 @@ form.addEventListener("submit", (e) => {
       function drawHeart() {
         hearts.forEach((heart) => {
           // ctx.fillStyle = "red"
-          if (death) {
-            ctx.drawImage(heartImage, heart.x - 60, heart.y + 20, 30, 30);
+          if (death == true) {
+            heartImage.src = 'smierc_serce.png';
           } else {
-            ctx.drawImage(heartImage, heart.x - 60, heart.y + 20, 30, 30);
+            heartImage.src = 'serce.png';
           }
+          ctx.drawImage(heartImage, heart.x - 60, heart.y + 20, 30, 30);
         });
       }
 
@@ -406,6 +407,8 @@ form.addEventListener("submit", (e) => {
             div.removeChild(progressBar);
             localStorage.setItem(name, points);
           }, 5);
+        } else if(death == true && bossHP == 0){
+          death = false;
         }
       }
       function deathFight() {}
@@ -417,6 +420,14 @@ form.addEventListener("submit", (e) => {
 
       function drawBgGrass() {
         ctx.drawImage(bgGrass, 0, canvas.height - 60, canvas.width, 60);
+      }
+
+      function changeBg(){
+        if(death == true){
+          canvas.style.backgroundImage = 'url("smierc_bg.png")';
+          }else{
+          canvas.style.backgroundImage = 'url("background.png")';
+        }
       }
 
       let directory;
@@ -467,7 +478,9 @@ form.addEventListener("submit", (e) => {
           if (!death) {
             drawShield();
           }
-          drawBgGrass();
+          if (!death){
+            drawBgGrass();
+          }
           drawBunny();
           drawEggs();
           drawHeart();
@@ -479,6 +492,7 @@ form.addEventListener("submit", (e) => {
           killBullet();
 
           noHP();
+          changeBg();
           if (keys["a"] && bunny.x > 0 + 50) {
             if (boost) {
               bunny.x -= speed * 2.5;
@@ -529,7 +543,9 @@ form.addEventListener("submit", (e) => {
             updatePrpgressBar((points / counter) * 100);
           }
         }
-        ctx.drawImage(grass, 0, canvas.height - 40, canvas.width, 40);
+        if (death == false){
+          ctx.drawImage(grass, 0, canvas.height - 40, canvas.width, 40);
+        }
         requestAnimationFrame(update);
       }
 
